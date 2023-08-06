@@ -24,7 +24,7 @@ import javax.net.ssl.SSLSocketFactory;
 
 public class VerifyRequest extends StringRequest {
     private static final String TAG = "verify";
-    final static private String URL = "https://192.168.0.5:443/Verify.php";
+    final static private String URL = "https://192.168.0.2:443/Verify.php";
     private Map<String ,String> map;
 
     public VerifyRequest(String userID, String message, String signature,String publicKey, Response.Listener<String> listener, Context context) throws CertificateException, IOException, KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
@@ -35,7 +35,7 @@ public class VerifyRequest extends StringRequest {
         Log.d(TAG, "서명  : " + signature);
         //Log.d(TAG, "공개키: " + publicKey);
 
-        SSLSocketFactory sslSocketFactory = getPinnedCertSslSocketFactory(context, R.raw.server);
+        SSLSocketFactory sslSocketFactory = getPinnedCertSslSocketFactory(context, R.raw.bpmserver);
         HttpsURLConnection.setDefaultSSLSocketFactory(sslSocketFactory);
 
         HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {

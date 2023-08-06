@@ -4,6 +4,7 @@ import static com.example.duduhgee.RegisterRequest.getPinnedCertSslSocketFactory
 
 import android.content.Context;
 
+import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
 
@@ -18,11 +19,11 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocketFactory;
 
-public class BuyRequest extends StringRequest {
-    final static private String URL = "https://192.168.0.2:443/SendChallenge.php";
+public class FIDORegisterRequest extends StringRequest {
+    final static private String URL = "https://192.168.0.2:443/FIDORegisterRequest.php";
 
-    public BuyRequest(Response.Listener<String> listener, Context context) throws CertificateException, IOException, KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
-        super(Method.GET, URL, listener, null);
+    public FIDORegisterRequest(String userID, Response.Listener<String> listener, Context context) throws CertificateException, IOException, KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
+        super(Method.POST, URL, listener, null);
 
         SSLSocketFactory sslSocketFactory = getPinnedCertSslSocketFactory(context, R.raw.bpmserver);
         HttpsURLConnection.setDefaultSSLSocketFactory(sslSocketFactory);
@@ -33,5 +34,4 @@ public class BuyRequest extends StringRequest {
             }
         });
     }
-
 }

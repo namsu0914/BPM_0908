@@ -78,7 +78,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-
                 Response.Listener<String> responseListener = new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -204,7 +203,13 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 };
-                BuyRequest buyRequest = new BuyRequest(responseListener);
+                BuyRequest buyRequest = null;
+                try {
+                    buyRequest = new BuyRequest(responseListener, MainActivity.this);
+                } catch (CertificateException | IOException | KeyStoreException |
+                         NoSuchAlgorithmException | KeyManagementException e) {
+                    throw new RuntimeException(e);
+                }
                 RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
                 queue.add(buyRequest);
             }
@@ -213,9 +218,6 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String userID = intent.getStringExtra("userID");
         tv_id.setText(userID);
-
-
-
 
     }
 
