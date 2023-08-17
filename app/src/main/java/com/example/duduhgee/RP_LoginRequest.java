@@ -1,6 +1,6 @@
 package com.example.duduhgee;
 
-import static com.example.duduhgee.RegisterRequest.getPinnedCertSslSocketFactory;
+import static com.example.duduhgee.RP_RegisterRequest.getPinnedCertSslSocketFactory;
 
 import android.content.Context;
 
@@ -21,12 +21,12 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocketFactory;
 
-public class LoginRequest extends StringRequest {
+public class RP_LoginRequest extends StringRequest {
     //서버 URL 설정(php파일 연동)
     final static private String URL = "https://192.168.0.2:443/Login.php";
     private Map<String ,String >map;
 
-    public LoginRequest(String userID, String userPassword, Response.Listener<String> listener, Context context) throws CertificateException, IOException, KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
+    public RP_LoginRequest(String userID, String userPassword, Response.Listener<String> listener, Context context) throws CertificateException, IOException, KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
         super(Method.POST, URL, listener, null);
 
         SSLSocketFactory sslSocketFactory = getPinnedCertSslSocketFactory(context, R.raw.bpmserver);

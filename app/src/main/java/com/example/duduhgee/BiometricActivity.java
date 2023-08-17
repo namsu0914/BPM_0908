@@ -1,5 +1,8 @@
 package com.example.duduhgee;
 
+import static com.example.duduhgee.base64urlEncode.base64UrlEncode;
+import static com.example.duduhgee.base64urlEncode.readRawResource;
+
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.KeyguardManager;
@@ -140,6 +143,8 @@ public class BiometricActivity extends AppCompatActivity {
                             Log.d(TAG,"Policy: "+policy);
 
 
+
+
                         } catch (JSONException e) {
                             Toast.makeText(getApplicationContext(), "오류가 발생하였습니다. ", Toast.LENGTH_SHORT).show();
                             throw new RuntimeException(e);
@@ -158,9 +163,9 @@ public class BiometricActivity extends AppCompatActivity {
 
                 if (checkBiometricSupport()) {
                     BiometricPrompt biometricPrompt = new BiometricPrompt.Builder(BiometricActivity.this)
-                            .setTitle("지문 인증을 시작합니다")
-                            .setSubtitle("지문 인증 시작")
-                            .setDescription("지문")
+                            .setTitle("생체 인증을 시작합니다")
+                            .setSubtitle("생체 인증 시작")
+                            .setDescription("생체인증")
                             .setNegativeButton("Cancel", getMainExecutor(), new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
@@ -186,9 +191,9 @@ public class BiometricActivity extends AppCompatActivity {
 
                 if (checkBiometricSupport()) {
                     BiometricPrompt biometricPrompt = new BiometricPrompt.Builder(BiometricActivity.this)
-                            .setTitle("지문 인증을 시작합니다")
-                            .setSubtitle("지문 인증 시작")
-                            .setDescription("지문")
+                            .setTitle("생체 인증을 시작합니다")
+                            .setSubtitle("생체 인증 시작")
+                            .setDescription("생체인증")
                             .setNegativeButton("Cancel", getMainExecutor(), new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
@@ -303,7 +308,7 @@ public class BiometricActivity extends AppCompatActivity {
             }
         };
 
-        SavePKRequest savePKRequest = new SavePKRequest(publicKeyString, userID, responseListener, errorListener, BiometricActivity.this);
+        RP_SavePKRequest savePKRequest = new RP_SavePKRequest(publicKeyString, userID, responseListener, errorListener, BiometricActivity.this);
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(savePKRequest);
     }
@@ -364,9 +369,9 @@ public class BiometricActivity extends AppCompatActivity {
                 }
             };
 
-            DeleteRequest deleteRequest;
+            RP_DeleteRequest deleteRequest;
             try {
-                deleteRequest = new DeleteRequest(userID, responseListener, BiometricActivity.this);
+                deleteRequest = new RP_DeleteRequest(userID, responseListener, BiometricActivity.this);
             } catch (CertificateException | IOException | KeyStoreException |
                      NoSuchAlgorithmException | KeyManagementException e) {
                 throw new RuntimeException(e);
@@ -381,6 +386,10 @@ public class BiometricActivity extends AppCompatActivity {
         } else {
             Log.d(TAG, "키스토어에 없습니다. ");
         }
+
+    }
+
+    private void FIDORegisterResponse(){
 
     }
 

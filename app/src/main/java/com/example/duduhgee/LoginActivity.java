@@ -84,9 +84,9 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 };
                 //로그인 처리
-                LoginRequest loginRequest = null;
+                RP_LoginRequest loginRequest = null;
                 try {
-                    loginRequest = new LoginRequest(userID, userPass, responseListner, LoginActivity.this);
+                    loginRequest = new RP_LoginRequest(userID, userPass, responseListner, LoginActivity.this);
                 } catch (CertificateException | IOException | KeyStoreException |
                          NoSuchAlgorithmException | KeyManagementException e) {
                     throw new RuntimeException(e);

@@ -1,6 +1,6 @@
 package com.example.duduhgee;
 
-import static com.example.duduhgee.RegisterRequest.getPinnedCertSslSocketFactory;
+import static com.example.duduhgee.RP_RegisterRequest.getPinnedCertSslSocketFactory;
 
 import android.content.Context;
 
@@ -21,13 +21,11 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocketFactory;
 
-public class DeleteRequest extends StringRequest {
-    final static private String URL = "https://192.168.0.2:443/DeleteBiometric.php";
-    private final Map<String, String> map;
+public class RP_CheckPKRequest extends StringRequest {
+    final static private String URL = "https://192.168.0.2:443/CheckPK.php";
+    private Map<String ,String > map;
 
-
-    public DeleteRequest(String userID, Response.Listener<String> listener, Context context)
-            throws CertificateException, IOException, KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
+    public RP_CheckPKRequest(String userID, Response.Listener<String> listener, Context context) throws CertificateException, IOException, KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
         super(Method.POST, URL, listener, null);
 
         SSLSocketFactory sslSocketFactory = getPinnedCertSslSocketFactory(context, R.raw.bpmserver);
@@ -39,13 +37,10 @@ public class DeleteRequest extends StringRequest {
             }
         });
 
-        map = new HashMap<>();
-        map.put("userID", userID);
+        map= new HashMap<>();
+        map.put("userID",userID);
     }
-
-    @Override
     protected Map<String, String> getParams() throws AuthFailureError {
         return map;
     }
-
 }

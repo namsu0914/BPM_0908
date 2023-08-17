@@ -74,9 +74,9 @@ public class RegisterActivity extends AppCompatActivity {
                 };
 
                 //서버로 Volley를 이용하여 요청
-                RegisterRequest registerRequest = null;
+                RP_RegisterRequest registerRequest = null;
                 try {
-                    registerRequest = new RegisterRequest(userID, userPass, userName, userAge, responseListner, RegisterActivity.this);
+                    registerRequest = new RP_RegisterRequest(userID, userPass, userName, userAge, responseListner, RegisterActivity.this);
                 } catch (CertificateException | IOException | KeyStoreException |
                          NoSuchAlgorithmException | KeyManagementException e) {
                     throw new RuntimeException(e);

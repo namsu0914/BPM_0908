@@ -184,9 +184,9 @@ public class BuyActivity extends AppCompatActivity {
                         }
                     }
                 };
-                BuyRequest buyRequest = null;
+                RP_BuyRequest buyRequest = null;
                 try {
-                    buyRequest = new BuyRequest(responseListener, BuyActivity.this);
+                    buyRequest = new RP_BuyRequest(responseListener, BuyActivity.this);
                 } catch (CertificateException | NoSuchAlgorithmException | KeyManagementException |
                          IOException | KeyStoreException e) {
                     throw new RuntimeException(e);
@@ -225,7 +225,7 @@ public class BuyActivity extends AppCompatActivity {
             }
         };
 
-        VerifyRequest verifyRequest = new VerifyRequest(userID, chall, Base64.encodeToString(signString, Base64.NO_WRAP), stringpublicKey, responseListener, BuyActivity.this);
+        RP_VerifyRequest verifyRequest = new RP_VerifyRequest(userID, chall, Base64.encodeToString(signString, Base64.NO_WRAP), stringpublicKey, responseListener, BuyActivity.this);
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(verifyRequest);
     }
