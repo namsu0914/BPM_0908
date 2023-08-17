@@ -1,10 +1,9 @@
 package com.example.duduhgee;
 
-import static com.example.duduhgee.RP_RegisterRequest.getPinnedCertSslSocketFactory;
+import static com.example.duduhgee.rp.RP_RegisterRequest.getPinnedCertSslSocketFactory;
 
 import android.content.Context;
 
-import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
 

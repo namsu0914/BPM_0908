@@ -1,4 +1,4 @@
-package com.example.duduhgee;
+package com.example.duduhgee.rp;
 
 import android.content.Context;
 
@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
+import com.example.duduhgee.R;
 
 import java.io.IOException;
 import java.io.InputStream;
