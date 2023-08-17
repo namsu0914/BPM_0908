@@ -13,7 +13,7 @@ import android.widget.Toast;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
-import com.example.duduhgee.rp.RP_LoginRequest;
+import com.example.rp.RP_LoginRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;

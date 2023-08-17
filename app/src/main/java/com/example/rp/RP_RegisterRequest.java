@@ -1,4 +1,4 @@
-package com.example.duduhgee.rp;
+package com.example.rp;
 
 import android.content.Context;
 

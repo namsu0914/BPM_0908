@@ -18,7 +18,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
-import com.example.duduhgee.rp.RP_BuyActivity;
+import com.example.rp.RP_BuyActivity;
 
 import java.io.IOException;
 import java.security.KeyStore;

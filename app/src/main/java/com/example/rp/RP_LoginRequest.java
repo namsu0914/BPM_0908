@@ -1,6 +1,6 @@
-package com.example.duduhgee.rp;
+package com.example.rp;
 
-import static com.example.duduhgee.rp.RP_RegisterRequest.getPinnedCertSslSocketFactory;
+import static com.example.rp.RP_RegisterRequest.getPinnedCertSslSocketFactory;
 
 import android.content.Context;
 
@@ -22,11 +22,12 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocketFactory;
 
-public class RP_CheckPKRequest extends StringRequest {
-    final static private String URL = "https://192.168.0.2:443/CheckPK.php";
-    private Map<String ,String > map;
+public class RP_LoginRequest extends StringRequest {
+    //서버 URL 설정(php파일 연동)
+    final static private String URL = "https://192.168.0.2:443/RP_Login.php";
+    private Map<String ,String >map;
 
-    public RP_CheckPKRequest(String userID, Response.Listener<String> listener, Context context) throws CertificateException, IOException, KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
+    public RP_LoginRequest(String userID, String userPassword, Response.Listener<String> listener, Context context) throws CertificateException, IOException, KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
         super(Method.POST, URL, listener, null);
 
         SSLSocketFactory sslSocketFactory = getPinnedCertSslSocketFactory(context, R.raw.bpmserver);
@@ -40,7 +41,10 @@ public class RP_CheckPKRequest extends StringRequest {
 
         map= new HashMap<>();
         map.put("userID",userID);
+        map.put("userPassword", userPassword);
+
     }
+    @Override
     protected Map<String, String> getParams() throws AuthFailureError {
         return map;
     }

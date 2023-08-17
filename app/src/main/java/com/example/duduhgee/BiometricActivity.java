@@ -11,8 +11,6 @@ import android.hardware.biometrics.BiometricPrompt;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CancellationSignal;
-import android.security.keystore.KeyGenParameterSpec;
-import android.security.keystore.KeyProperties;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -27,22 +25,18 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
-import com.example.duduhgee.rp.RP_DeleteRequest;
-import com.example.duduhgee.rp.RP_SavePKRequest;
+import com.example.asm.ASM_checkKeyPairExistence;
+import com.example.rp.RP_DeleteRequest;
+import com.example.rp.RP_SavePKRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.security.InvalidAlgorithmParameterException;
 import java.security.KeyManagementException;
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
-import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.UnrecoverableEntryException;
 import java.security.cert.CertificateException;
@@ -88,17 +82,41 @@ public class BiometricActivity extends AppCompatActivity {
 
             @Override
             public void onAuthenticationSucceeded(BiometricPrompt.AuthenticationResult result) {
+                Intent intent = getIntent();
+                String userID = intent.getStringExtra("userID");
                 super.onAuthenticationSucceeded(result);
                 notifyUser("인증에 성공하였습니다");
 
                 if (start_authenticationIsClicked) {
-                    checkKeyPairExistence();
+                    ASM_checkKeyPairExistence checkkp = new ASM_checkKeyPairExistence();
+                    boolean iskeyEX = checkkp.ASM_checkkeypairexistence(userID);
                     // 공개키를 서버로 전송
+                    //RP_sendPublicKeyToServer(publicKey);
                     try {
-                        sendPublicKeyToServer(publicKey);
-                    } catch (CertificateException | IOException | KeyStoreException |
-                             NoSuchAlgorithmException | KeyManagementException e) {
+                        keyStore = KeyStore.getInstance("AndroidKeyStore");
+                    } catch (KeyStoreException e) {
                         throw new RuntimeException(e);
+                    }
+                    try {
+                        keyStore.load(null);
+                    } catch (CertificateException | IOException | NoSuchAlgorithmException e) {
+                        throw new RuntimeException(e);
+                    }
+                    KeyStore.PrivateKeyEntry privateKeyEntry = null;
+                    try {
+                        privateKeyEntry = (KeyStore.PrivateKeyEntry) keyStore.getEntry(userID, null);
+                    } catch (KeyStoreException | NoSuchAlgorithmException |
+                             UnrecoverableEntryException e) {
+                        throw new RuntimeException(e);
+                    }
+                    publicKey = privateKeyEntry.getCertificate().getPublicKey();
+                    if(iskeyEX){
+                        try {
+                            RP_sendpublickeytoserver(publicKey, userID);
+                        } catch (CertificateException | IOException | KeyStoreException |
+                                 NoSuchAlgorithmException | KeyManagementException e) {
+                            throw new RuntimeException(e);
+                        }
                     }
 
                 } else if (delete_bioIsClicked) {
@@ -109,7 +127,6 @@ public class BiometricActivity extends AppCompatActivity {
                         throw new RuntimeException(e);
                     }
                 }else{
-
                 }
             }
         };
@@ -119,29 +136,23 @@ public class BiometricActivity extends AppCompatActivity {
             @TargetApi(Build.VERSION_CODES.P)
             @Override
             public void onClick(View view) {
-                Intent intent = getIntent();
-                String userID = intent.getStringExtra("userID");
 
                 start_authenticationIsClicked = true;
                 delete_bioIsClicked = false;
-                Response.Listener<String> responseListner = new Response.Listener<String>() {
+                Response.Listener<String> responseListener = new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         try {
                             JSONObject jsonObject = new JSONObject(response);
-
                             String header = jsonObject.getString("Header");
                             String username = jsonObject.getString("Username");
                             String challenge = jsonObject.getString("Challenge");
                             String policy = jsonObject.getString("Policy");
 
-
                             Log.d(TAG,"Header: "+header);
                             Log.d(TAG,"Username: "+username);
                             Log.d(TAG,"Challenge: "+challenge);
                             Log.d(TAG,"Policy: "+policy);
-
-
 
 
                         } catch (JSONException e) {
@@ -152,7 +163,9 @@ public class BiometricActivity extends AppCompatActivity {
                 };
                 FIDORegisterRequest fidoRegisterRequest = null;
                 try {
-                    fidoRegisterRequest = new FIDORegisterRequest(userID ,responseListner, BiometricActivity.this);
+                    Intent intent = getIntent();
+                    String userID = intent.getStringExtra("userID");
+                    fidoRegisterRequest = new FIDORegisterRequest(userID, responseListener, BiometricActivity.this);
                 } catch (CertificateException | IOException | KeyStoreException |
                          NoSuchAlgorithmException | KeyManagementException e) {
                     throw new RuntimeException(e);
@@ -162,9 +175,9 @@ public class BiometricActivity extends AppCompatActivity {
 
                 if (checkBiometricSupport()) {
                     BiometricPrompt biometricPrompt = new BiometricPrompt.Builder(BiometricActivity.this)
-                            .setTitle("생체 인증을 시작합니다")
-                            .setSubtitle("생체 인증 시작")
-                            .setDescription("생체인증")
+                            .setTitle("지문 인증을 시작합니다")
+                            .setSubtitle("지문 인증 시작")
+                            .setDescription("지문")
                             .setNegativeButton("Cancel", getMainExecutor(), new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
@@ -190,9 +203,9 @@ public class BiometricActivity extends AppCompatActivity {
 
                 if (checkBiometricSupport()) {
                     BiometricPrompt biometricPrompt = new BiometricPrompt.Builder(BiometricActivity.this)
-                            .setTitle("생체 인증을 시작합니다")
-                            .setSubtitle("생체 인증 시작")
-                            .setDescription("생체인증")
+                            .setTitle("지문 인증을 시작합니다")
+                            .setSubtitle("지문 인증 시작")
+                            .setDescription("지문")
                             .setNegativeButton("Cancel", getMainExecutor(), new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
@@ -208,78 +221,9 @@ public class BiometricActivity extends AppCompatActivity {
 
     }
 
-    private void checkKeyPairExistence() {
-        Intent intent = getIntent();
-        String userID = intent.getStringExtra("userID");
 
-        try {
-            keyStore = KeyStore.getInstance("AndroidKeyStore");
-            keyStore.load(null);
+    public void RP_sendpublickeytoserver(PublicKey publicKey, String userID) throws CertificateException, IOException, KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
 
-            if (keyStore.containsAlias(userID)) {
-                // 키 쌍이 존재함
-                KeyStore.PrivateKeyEntry privateKeyEntry = (KeyStore.PrivateKeyEntry) keyStore.getEntry(userID, null);
-                publicKey = privateKeyEntry.getCertificate().getPublicKey();
-                // 공개 키와 개인 키 출력
-                Log.d(TAG, "Public Key: " + Base64.encodeToString(publicKey.getEncoded(), Base64.NO_WRAP));
-                Toast.makeText(getApplicationContext(), "이미 저장된 생체정보입니다. ", Toast.LENGTH_SHORT).show();
-            } else {
-                // 키 쌍이 존재하지 않음
-                Log.d(TAG, "Key pair not found");
-                generateKeyPair();
-            }
-        } catch (NoSuchAlgorithmException | CertificateException | IOException | KeyStoreException | UnrecoverableEntryException e) {
-            e.printStackTrace();
-            Toast.makeText(getApplicationContext(), "키 저장소 오류: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
-    }
-
-
-
-    private void generateKeyPair() {
-        Intent intent = getIntent();
-        String userID = intent.getStringExtra("userID");
-        try {
-            keyStore = KeyStore.getInstance("AndroidKeyStore");
-            keyStore.load(null);
-
-            if (!keyStore.containsAlias(userID)) {
-                KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance(KeyProperties.KEY_ALGORITHM_RSA, "AndroidKeyStore");
-                keyPairGenerator.initialize(new KeyGenParameterSpec.Builder(userID, KeyProperties.PURPOSE_SIGN)
-                        .setDigests(KeyProperties.DIGEST_SHA256)
-                        .setSignaturePaddings(KeyProperties.SIGNATURE_PADDING_RSA_PKCS1)
-                        .build());
-
-                KeyPair keyPair = keyPairGenerator.generateKeyPair();
-                publicKey = keyPair.getPublic();
-
-                KeyStore.PrivateKeyEntry privateKeyEntry = (KeyStore.PrivateKeyEntry) keyStore.getEntry(userID, null);
-                PrivateKey privateKey = privateKeyEntry.getPrivateKey();
-//                PrivateKey privateKey = keyPair.getPrivate();
-
-                // 공개키를 서버로 전송
-                sendPublicKeyToServer(publicKey);
-
-                Log.d(TAG, "공개키: " + Base64.encodeToString(publicKey.getEncoded(), Base64.NO_WRAP));
-            } else {
-                // 키 쌍이 이미 존재함
-                KeyStore.PrivateKeyEntry privateKeyEntry = (KeyStore.PrivateKeyEntry) keyStore.getEntry(userID, null);
-                publicKey = privateKeyEntry.getCertificate().getPublicKey();
-                // 공개 키와 개인 키 출력
-                Log.d(TAG, "Public Key: " + Base64.encodeToString(publicKey.getEncoded(), Base64.NO_WRAP));
-                Toast.makeText(getApplicationContext(), "이미 저장된 생체정보입니다. ", Toast.LENGTH_SHORT).show();
-            }
-        } catch (NoSuchAlgorithmException | NoSuchProviderException | InvalidAlgorithmParameterException | KeyStoreException | CertificateException | IOException | UnrecoverableEntryException e) {
-            e.printStackTrace();
-            Toast.makeText(getApplicationContext(), "키 생성 오류: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-        } catch (KeyManagementException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private void sendPublicKeyToServer(PublicKey publicKey) throws CertificateException, IOException, KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
-        Intent intent = getIntent();
-        String userID = intent.getStringExtra("userID");
 
         String publicKeyString = Base64.encodeToString(publicKey.getEncoded(), Base64.NO_WRAP);
 
@@ -385,12 +329,5 @@ public class BiometricActivity extends AppCompatActivity {
         } else {
             Log.d(TAG, "키스토어에 없습니다. ");
         }
-
     }
-
-    private void FIDORegisterResponse(){
-
-    }
-
 }
-

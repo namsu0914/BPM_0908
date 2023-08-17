@@ -1,6 +1,6 @@
-package com.example.duduhgee.rp;
+package com.example.rp;
 
-import static com.example.duduhgee.rp.RP_RegisterRequest.getPinnedCertSslSocketFactory;
+import static com.example.rp.RP_RegisterRequest.getPinnedCertSslSocketFactory;
 
 import android.content.Context;
 
