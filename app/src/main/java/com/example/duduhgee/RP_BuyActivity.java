@@ -10,14 +10,14 @@ import android.hardware.biometrics.BiometricPrompt;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CancellationSignal;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -27,23 +27,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
 import java.security.KeyManagementException;
-import java.security.KeyPairGenerator;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
-import java.security.Signature;
 import java.security.UnrecoverableEntryException;
 import java.security.cert.CertificateException;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
-public class BuyActivity extends AppCompatActivity {
+public class RP_BuyActivity extends AppCompatActivity {
 
     private Button btn_buy;
     //private static final String KEY_NAME = userID;
@@ -52,7 +45,7 @@ public class BuyActivity extends AppCompatActivity {
     private PublicKey publicKey;
     private BiometricPrompt.AuthenticationCallback authenticationCallback;
     private CancellationSignal cancellationSignal = null;
-    private static final String TAG = BuyActivity.class.getSimpleName();
+    private static final String TAG = RP_BuyActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,32 +72,6 @@ public class BuyActivity extends AppCompatActivity {
 
                                 Log.d(TAG, "챌린지값: " + challenge);
 
-                                keyStore = KeyStore.getInstance("AndroidKeyStore");
-                                keyStore.load(null);
-
-                                boolean hasAccess = checkPrivateKeyAccess(userID);
-                                if (hasAccess) {
-                                    // 개인 키에 액세스할 수 있는 권한이 있음
-                                    Log.d(TAG, "개인 키에 액세스할 수 있는 권한이 있음");
-                                } else {
-                                    // 개인 키에 액세스할 수 있는 권한이 없음
-                                    Log.d(TAG, "개인 키에 액세스할 수 있는 권한이 없음");
-                                    // TODO: 개인 키 생성 또는 액세스 권한 요청 로직을 추가해야 합니다.
-                                    // generateKeyPair();
-                                    // requestPrivateKeyAccess(userID);
-                                }
-
-                                if (keyStore.containsAlias(userID)) {
-                                    // 키 쌍이 존재함
-                                    // 공개 키와 개인 키 출력
-                                    Log.d(TAG, "키스토어 저장됨");
-                                } else {
-                                    // 키 쌍이 존재하지 않음
-                                    Log.d(TAG, "Key pair not found");
-                                    // TODO: 키 쌍 생성 로직을 추가해야 합니다.
-                                    // generateKeyPair();
-                                }
-
                                 authenticationCallback = new BiometricPrompt.AuthenticationCallback() {
                                     @Override
                                     public void onAuthenticationFailed() {
@@ -123,20 +90,8 @@ public class BuyActivity extends AppCompatActivity {
                                         super.onAuthenticationSucceeded(result);
                                         notifyUser("인증에 성공하였습니다");
 
-                                        KeyStore.PrivateKeyEntry privateKeyEntry = null;
-                                        try {
-                                            privateKeyEntry = (KeyStore.PrivateKeyEntry) keyStore.getEntry(userID, null);
-                                        } catch (KeyStoreException e) {
-                                            throw new RuntimeException(e);
-                                        } catch (NoSuchAlgorithmException e) {
-                                            throw new RuntimeException(e);
-                                        } catch (UnrecoverableEntryException e) {
-                                            throw new RuntimeException(e);
-                                        }
-                                        privateKey = privateKeyEntry.getPrivateKey();
-
-                                        SignatureActivity signatureActivity = new SignatureActivity();
-                                        byte[] signedChallenge = signatureActivity.signChallenge(challenge, privateKey);
+                                        ASM_SignatureActivity signatureActivity = new ASM_SignatureActivity();
+                                        byte[] signedChallenge = signatureActivity.signChallenge(challenge, userID);
 
                                         if (signedChallenge != null) {
                                             // Method invocation was successful
@@ -158,7 +113,7 @@ public class BuyActivity extends AppCompatActivity {
                                     }
                                 };
                                 if (checkBiometricSupport()) {
-                                    BiometricPrompt biometricPrompt = new BiometricPrompt.Builder(BuyActivity.this)
+                                    BiometricPrompt biometricPrompt = new BiometricPrompt.Builder(RP_BuyActivity.this)
                                             .setTitle("지문 인증을 시작합니다")
                                             .setSubtitle("지문 인증 시작")
                                             .setDescription("지문")
@@ -178,20 +133,17 @@ public class BuyActivity extends AppCompatActivity {
                         } catch (JSONException e) {
                             Toast.makeText(getApplicationContext(), "오류가 발생하였습니다. ", Toast.LENGTH_SHORT).show();
                             throw new RuntimeException(e);
-                        } catch (CertificateException | KeyStoreException | IOException |
-                                 NoSuchAlgorithmException e) {
-                            throw new RuntimeException(e);
                         }
                     }
                 };
                 RP_BuyRequest buyRequest = null;
                 try {
-                    buyRequest = new RP_BuyRequest(responseListener, BuyActivity.this);
+                    buyRequest = new RP_BuyRequest(responseListener, RP_BuyActivity.this);
                 } catch (CertificateException | NoSuchAlgorithmException | KeyManagementException |
                          IOException | KeyStoreException e) {
                     throw new RuntimeException(e);
                 }
-                RequestQueue queue = Volley.newRequestQueue(BuyActivity.this);
+                RequestQueue queue = Volley.newRequestQueue(RP_BuyActivity.this);
                 queue.add(buyRequest);
             }
         });
@@ -225,31 +177,19 @@ public class BuyActivity extends AppCompatActivity {
             }
         };
 
-        RP_VerifyRequest verifyRequest = new RP_VerifyRequest(userID, chall, Base64.encodeToString(signString, Base64.NO_WRAP), stringpublicKey, responseListener, BuyActivity.this);
+        RP_VerifyRequest verifyRequest = new RP_VerifyRequest(userID, chall, Base64.encodeToString(signString, Base64.NO_WRAP), stringpublicKey, responseListener, RP_BuyActivity.this);
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(verifyRequest);
     }
 
     private void notifyUser(String message) {
-        Toast.makeText(BuyActivity.this, message, Toast.LENGTH_SHORT).show();
+        Toast.makeText(RP_BuyActivity.this, message, Toast.LENGTH_SHORT).show();
     }
 
     private CancellationSignal getCancellationSignal() {
         cancellationSignal = new CancellationSignal();
         cancellationSignal.setOnCancelListener(() -> notifyUser("Authentication was Cancelled by the user"));
         return cancellationSignal;
-    }
-
-    private boolean checkPrivateKeyAccess(String keyAlias) {
-        try {
-            KeyStore keyStore = KeyStore.getInstance("AndroidKeyStore");
-            keyStore.load(null);
-
-            return keyStore.entryInstanceOf(keyAlias, KeyStore.PrivateKeyEntry.class);
-        } catch (KeyStoreException | CertificateException | NoSuchAlgorithmException | IOException e) {
-            e.printStackTrace();
-        }
-        return false;
     }
 
     @TargetApi(Build.VERSION_CODES.P)

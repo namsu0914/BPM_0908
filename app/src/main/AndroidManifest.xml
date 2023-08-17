@@ -35,10 +35,10 @@
             android:name=".BiometricActivity"
             android:exported="false" />
         <activity
-            android:name=".SignatureActivity"
+            android:name=".ASM_SignatureActivity"
             android:exported="false" />
         <activity
-            android:name=".BuyActivity"
+            android:name=".RP_BuyActivity"
             android:exported="false"/>
     </application>
 

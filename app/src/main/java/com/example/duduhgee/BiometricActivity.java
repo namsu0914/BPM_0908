@@ -1,8 +1,5 @@
 package com.example.duduhgee;
 
-import static com.example.duduhgee.base64urlEncode.base64UrlEncode;
-import static com.example.duduhgee.base64urlEncode.readRawResource;
-
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.KeyguardManager;

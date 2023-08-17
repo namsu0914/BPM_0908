@@ -1,17 +1,5 @@
 package com.example.duduhgee;
 
-import static com.example.duduhgee.base64urlEncode.base64UrlEncode;
-import static com.example.duduhgee.base64urlEncode.readRawResource;
-
-import android.content.Context;
-
-import com.example.duduhgee.base64urlEncode;
-
-import com.android.volley.toolbox.StringRequest;
-
-import java.io.IOException;
-import java.util.Set;
-
 public class SetPolicy {
 //    String appID = "https://192.168.0.2:443/ResgisterRequest.php";
 
