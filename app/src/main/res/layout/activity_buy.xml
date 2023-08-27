@@ -23,7 +23,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/favorite_img_4" />
+                    android:src="@drawable/tissue" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -66,7 +66,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="4dp"
                             android:fontFamily="@font/calibri"
-                            android:text="Cactus"
+                            android:text="휴지"
                             android:textColor="#000000"
                             android:textSize="24sp" />
 
@@ -74,7 +74,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/calibri"
-                            android:text="S19"
+                            android:text="1500원"
                             android:textColor="#8e8ef6"
                             android:textSize="16sp"
                             android:textStyle="bold" />
@@ -98,7 +98,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="4dp"
                             android:fontFamily="@font/calibri"
-                            android:text="Wildan Shop"
+                            android:text="휴지샵"
                             android:textSize="16sp" />
 
                         <ImageView
@@ -125,7 +125,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/calibri"
                 android:padding="16dp"
-                android:text="in addition to being a decoration, cactus can also be a health benefit, let's buy cactus in our store because now discount 30%"
+                android:text="당신의 지저분한 입을 닦을 휴지가 필요하십니까? 잘 찾아오셨습니다. 이상품이 제격입니다!"
                 android:textColor="#444444"
                 android:textSize="16sp" />
 

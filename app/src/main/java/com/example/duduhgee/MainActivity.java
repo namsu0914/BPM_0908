@@ -33,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView tv_id;
     private Button btn_info;
 
+    private Button btn_home;
+
     //private static final String KEY_NAME = userID;
     private KeyStore keyStore;
     private PrivateKey privateKey;
@@ -48,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
         tv_id = findViewById(R.id.tv_id);
         btn_info = findViewById(R.id.btn_info);
+        btn_home = findViewById(R.id.btn_home);
 
         ImageView imageViewClickable = findViewById(R.id.imageViewClickable);
         Intent intent = getIntent();
@@ -75,6 +78,17 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        btn_home.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // 메인 액티비티로 이동하는 인텐트 생성
+                Intent mainIntent = new Intent(MainActivity.this, MainActivity.class);
+                startActivity(mainIntent);
+                finish(); // 현재 액티비티를 종료하여 이전 액티비티로 돌아갈 수 있도록 함
+            }
+        });
+
         tv_id.setText(userID);
     }
 

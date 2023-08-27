@@ -27,6 +27,10 @@ public class CardEnrollActivity extends AppCompatActivity {
     private EditText et_card, et_cvc, et_date, et_pw;
     private Button btn_enroll;
 
+    private Button btn_info;
+
+    private Button btn_home;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +40,9 @@ public class CardEnrollActivity extends AppCompatActivity {
         et_cvc = findViewById(R.id.et_cvc);
         et_date = findViewById(R.id.et_date);
         et_pw = findViewById(R.id.et_pw);
+
+        btn_home = findViewById(R.id.btn_home);
+        btn_info = findViewById(R.id.btn_info);
 
         //회원가입 클릭시 수행
         btn_enroll = findViewById(R.id.cardenroll);
@@ -91,6 +98,28 @@ public class CardEnrollActivity extends AppCompatActivity {
 
                 RequestQueue queue = Volley.newRequestQueue(CardEnrollActivity.this);
                 queue.add(rp_cardEnrollRequest);
+            }
+        });
+
+        btn_info.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = getIntent();
+                String userID = intent.getStringExtra("userID");
+
+                intent = new Intent(CardEnrollActivity.this, BiometricActivity.class);
+                intent.putExtra("userID", userID);
+                startActivity(intent);
+            }
+        });
+
+        btn_home.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // 메인 액티비티로 이동하는 인텐트 생성
+                Intent mainIntent = new Intent(CardEnrollActivity.this, MainActivity.class);
+                startActivity(mainIntent);
+                finish(); // 현재 액티비티를 종료하여 이전 액티비티로 돌아갈 수 있도록 함
             }
         });
     }

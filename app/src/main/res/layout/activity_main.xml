@@ -305,7 +305,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="200dp"
                                     android:scaleType="centerCrop"
-                                    android:src="@drawable/favorite_img_4" />
+                                    android:src="@drawable/tissue" />
 
                                 <LinearLayout
                                     android:layout_width="match_parent"
@@ -319,7 +319,7 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:fontFamily="@font/calibri"
-                                        android:text="Cactus"
+                                        android:text="휴지"
                                         android:textColor="#FFFFFF"
                                         android:textSize="14sp"
                                         android:textStyle="bold" />
@@ -336,7 +336,7 @@
                                             android:layout_height="wrap_content"
                                             android:layout_weight="80"
                                             android:fontFamily="@font/calibri"
-                                            android:text="$18"
+                                            android:text="1500원"
                                             android:textColor="#FFFFFF"
                                             android:textSize="12sp"
                                             android:textStyle="bold" />
@@ -372,7 +372,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="200dp"
                                     android:scaleType="centerCrop"
-                                    android:src="@drawable/favorite_img_2" />
+                                    android:src="@drawable/toothbrush" />
 
                                 <LinearLayout
                                     android:layout_width="match_parent"
@@ -386,7 +386,7 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:fontFamily="@font/calibri"
-                                        android:text="Traditional Chair"
+                                        android:text="덴탈케어 칫솔"
                                         android:textColor="#FFFFFF"
                                         android:textSize="14sp"
                                         android:textStyle="bold" />
@@ -403,7 +403,7 @@
                                             android:layout_height="wrap_content"
                                             android:layout_weight="80"
                                             android:fontFamily="@font/calibri"
-                                            android:text="$24"
+                                            android:text="1000원"
                                             android:textColor="#FFFFFF"
                                             android:textSize="12sp"
                                             android:textStyle="bold" />
@@ -601,11 +601,13 @@
                 android:layout_weight="50"
                 android:orientation="vertical">
 
-                <ImageView
+                <Button
+                    android:id="@+id/btn_home"
                     android:layout_width="28dp"
                     android:layout_height="28dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/ic_home_gray_24dp" />
+                    android:background="@drawable/ic_home_gray_24dp"
+                    android:onClick="goToMainActivity" />
 
                 <View
                     android:layout_width="84dp"
@@ -625,9 +627,10 @@
 
                 <Button
                     android:id="@+id/btn_info"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="회원정보" />
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/ic_person_gray_24dp" />
 
                 <View
                     android:layout_width="84dp"
