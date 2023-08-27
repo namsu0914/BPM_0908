@@ -47,6 +47,7 @@ public class BiometricActivity extends AppCompatActivity {
     private BiometricPrompt.AuthenticationCallback authenticationCallback;
     private Button btn_auth;
     private Button btn_del;
+    private Button btn_card;
 
     private boolean start_authenticationIsClicked = false;
     private boolean delete_bioIsClicked = false;
@@ -65,6 +66,7 @@ public class BiometricActivity extends AppCompatActivity {
 
         btn_auth = findViewById(R.id.start_authentication);
         btn_del  = findViewById(R.id.delete_bio);
+        btn_card = findViewById(R.id.btn_card);
 
         authenticationCallback = new BiometricPrompt.AuthenticationCallback() {
 
@@ -216,6 +218,18 @@ public class BiometricActivity extends AppCompatActivity {
                     biometricPrompt.authenticate(getCancellationSignal(), getMainExecutor(), authenticationCallback);
 
                 }
+            }
+        });
+
+        btn_card.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = getIntent();
+                String userID = intent.getStringExtra("userID");
+
+                intent = new Intent(BiometricActivity.this, CardEnrollActivity.class);
+                intent.putExtra("userID", userID);
+                startActivity(intent);
             }
         });
 

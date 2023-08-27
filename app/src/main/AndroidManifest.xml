@@ -40,6 +40,9 @@
         <activity
             android:name="com.example.rp.RP_BuyActivity"
             android:exported="false"/>
+        <activity
+            android:name="com.example.duduhgee.CardEnrollActivity"
+            android:exported="false"/>
     </application>
 
 </manifest>
