@@ -69,10 +69,18 @@ public class RP_BuyActivity extends AppCompatActivity {
                         try {
                             JSONObject jsonObject = new JSONObject(response);
 
-                            if (jsonObject.has("challenge")) {
-                                String challenge = jsonObject.getString("challenge");
+                            if (jsonObject.has("Header")) {
+                                String header = jsonObject.getString("Header");
+                                String username = jsonObject.getString("Username");
+                                String challenge = jsonObject.getString("Challenge");
+                                String policy = jsonObject.getString("Policy");
+                                String transaction = jsonObject.getString("Transaction");
 
-                                Log.d(TAG, "챌린지값: " + challenge);
+                                Log.d(TAG,"Header: "+header);
+                                Log.d(TAG,"Username: "+username);
+                                Log.d(TAG,"Challenge: "+challenge);
+                                Log.d(TAG,"Policy: "+policy);
+                                Log.d(TAG, "Transaction: " + transaction);
 
                                 authenticationCallback = new BiometricPrompt.AuthenticationCallback() {
                                     @Override
@@ -130,7 +138,7 @@ public class RP_BuyActivity extends AppCompatActivity {
                                 }
 
                             } else {
-                                Log.e(TAG, "Challenge key not found in JSON response");
+                                Log.e(TAG, "Header not found in JSON response");
                             }
                         } catch (JSONException e) {
                             Toast.makeText(getApplicationContext(), "오류가 발생하였습니다. ", Toast.LENGTH_SHORT).show();
@@ -140,7 +148,7 @@ public class RP_BuyActivity extends AppCompatActivity {
                 };
                 RP_BuyRequest buyRequest = null;
                 try {
-                    buyRequest = new RP_BuyRequest(responseListener, RP_BuyActivity.this);
+                    buyRequest = new RP_BuyRequest(userID,responseListener, RP_BuyActivity.this);
                 } catch (CertificateException | NoSuchAlgorithmException | KeyManagementException |
                          IOException | KeyStoreException e) {
                     throw new RuntimeException(e);
@@ -163,7 +171,7 @@ public class RP_BuyActivity extends AppCompatActivity {
             public void onResponse(String response) {
                 try {
                     JSONObject jsonObject = new JSONObject(response);
-                    boolean success = jsonObject.getBoolean("success");
+                    boolean success = jsonObject.getBoolean("purchased");
 
                     if (success) {
                         // 검증 성공

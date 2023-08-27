@@ -132,7 +132,7 @@
                         android:layout_height="match_parent"
                         android:fontFamily="@font/calibri"
                         android:hint="비밀번호"
-                        android:inputType="textPassword"
+                        android:inputType="number"
                         android:digits="0123456789"
                         android:maxLines="1"
                         android:textColor="@android:color/black"
