@@ -18,6 +18,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import com.example.rp.RP_Buy2Activity;
 import com.example.rp.RP_BuyActivity;
 
 import java.io.IOException;
@@ -53,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
         btn_home = findViewById(R.id.btn_home);
 
         ImageView imageViewClickable = findViewById(R.id.imageViewClickable);
+        ImageView imageViewClickable2 = findViewById(R.id.imageViewClickable2);
         Intent intent = getIntent();
         String userID = intent.getStringExtra("userID");
 
@@ -61,6 +63,16 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // Start the new activity when the ImageView is clicked
                 Intent intent = new Intent(MainActivity.this, RP_BuyActivity.class);
+                intent.putExtra("userID", userID);
+                startActivity(intent);
+            }
+        });
+
+        imageViewClickable2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Start the new activity when the ImageView is clicked
+                Intent intent = new Intent(MainActivity.this, RP_Buy2Activity.class);
                 intent.putExtra("userID", userID);
                 startActivity(intent);
             }
@@ -90,6 +102,12 @@ public class MainActivity extends AppCompatActivity {
         });
 
         tv_id.setText(userID);
+    }
+
+    private void startBuyActivity(Class<?> activityClass, String userID) {
+        Intent intent = new Intent(MainActivity.this, activityClass);
+        intent.putExtra("userID", userID);
+        startActivity(intent);
     }
 
 

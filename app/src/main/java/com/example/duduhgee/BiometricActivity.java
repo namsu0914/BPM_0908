@@ -15,6 +15,7 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -28,8 +29,10 @@ import com.android.volley.toolbox.Volley;
 import com.example.asm.ASM_checkKeyPairExistence;
 import com.example.rp.RP_DeleteAccountRequest;
 import com.example.rp.RP_DeleteRequest;
+import com.example.rp.RP_PaymentDetailRequest;
 import com.example.rp.RP_SavePKRequest;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -50,6 +53,10 @@ public class BiometricActivity extends AppCompatActivity {
     private Button btn_del;
     private Button btn_card;
     private Button btn_delAc;
+
+    private TextView tv_product1, tv_amount1, tv_unitprice1, tv_totalprice1;
+    private TextView tv_product2, tv_amount2, tv_unitprice2, tv_totalprice2;
+
 
     private Button btn_info;
     private Button btn_home;
@@ -76,6 +83,51 @@ public class BiometricActivity extends AppCompatActivity {
         btn_delAc = findViewById(R.id.delete);
         btn_home = findViewById(R.id.btn_home);
         btn_info = findViewById(R.id.btn_info);
+
+        tv_product1 = findViewById(R.id.tv_product1);
+        tv_amount1 = findViewById(R.id.tv_amount1);
+        tv_unitprice1 = findViewById(R.id.tv_unitprice1);
+        tv_totalprice1 = findViewById(R.id.tv_totalprice1);
+        tv_product2 = findViewById(R.id.tv_product2);
+        tv_amount2 = findViewById(R.id.tv_amount2);
+        tv_unitprice2 = findViewById(R.id.tv_unitprice2);
+        tv_totalprice2 = findViewById(R.id.tv_totalprice2);
+
+        Response.Listener<String> responseListner = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    //JSONObject jsonObject = new JSONObject(response);
+                    JSONArray jsonarray = new JSONArray(response);
+                    for(int i=0; i < jsonarray.length(); i++) {
+                        JSONObject jsonobject = jsonarray.getJSONObject(i);
+                        String product       = jsonobject.getString("product");
+                        String amount    = jsonobject.getString("amount");
+                        String unitPrice  = jsonobject.getString("unitPrice");
+                        String totalPrice = jsonobject.getString("totalPrice");
+                        if(i==0){
+                            tv_product1.setText(product);
+                            tv_amount1.setText(amount);
+                            tv_unitprice1.setText(unitPrice);
+                            tv_totalprice1.setText(totalPrice);
+                        }else{
+                            tv_product2.setText(product);
+                            tv_amount2.setText(amount);
+                            tv_unitprice2.setText(unitPrice);
+                            tv_totalprice2.setText(totalPrice);
+                        }
+
+                    }
+
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        };
+        RP_PaymentDetailRequest paymentDetailRequest = null;
+        paymentDetailRequest = new RP_PaymentDetailRequest(responseListner);
+        RequestQueue queue = Volley.newRequestQueue(BiometricActivity.this);
+        queue.add(paymentDetailRequest);
 
         authenticationCallback = new BiometricPrompt.AuthenticationCallback() {
 
@@ -465,5 +517,3 @@ public class BiometricActivity extends AppCompatActivity {
     }
 
 }
-
-

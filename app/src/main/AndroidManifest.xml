@@ -43,6 +43,12 @@
         <activity
             android:name="com.example.duduhgee.CardEnrollActivity"
             android:exported="false"/>
+        <activity
+            android:name="com.example.rp.RP_Buy2Activity"
+            android:exported="false"/>
+        <activity
+            android:name="com.example.rp.RP_BuySuccessActivity"
+            android:exported="false"/>
     </application>
 
 </manifest>

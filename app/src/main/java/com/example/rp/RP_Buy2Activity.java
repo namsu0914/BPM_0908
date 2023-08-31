@@ -38,7 +38,7 @@ import java.security.PublicKey;
 import java.security.UnrecoverableEntryException;
 import java.security.cert.CertificateException;
 
-public class RP_BuyActivity extends AppCompatActivity {
+public class RP_Buy2Activity extends AppCompatActivity {
 
     private Button btn_buy;
     //private static final String KEY_NAME = userID;
@@ -52,7 +52,7 @@ public class RP_BuyActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_buy);
+        setContentView(R.layout.activity_buy2);
 
         btn_buy = findViewById(R.id.btn_buy);
 
@@ -107,8 +107,8 @@ public class RP_BuyActivity extends AppCompatActivity {
                                             // Method invocation was successful
                                             Log.d(TAG, "Signed Challenge: " + Base64.encodeToString(signedChallenge, Base64.NO_WRAP));
 
-                                            Intent successIntent = new Intent(RP_BuyActivity.this, RP_BuySuccessActivity.class);
-                                            successIntent.putExtra("purchase_item", "tissue"); // 구매한 항목 정보 전달
+                                            Intent successIntent = new Intent(RP_Buy2Activity.this, RP_BuySuccessActivity.class);
+                                            successIntent.putExtra("purchase_item", "toothbrush"); // 구매한 항목 정보 전달
                                             successIntent.putExtra("signed_challenge", signedChallenge); // 서명된 도전 정보 전달
                                             startActivity(successIntent);
                                             finish();
@@ -130,7 +130,7 @@ public class RP_BuyActivity extends AppCompatActivity {
                                     }
                                 };
                                 if (checkBiometricSupport()) {
-                                    BiometricPrompt biometricPrompt = new BiometricPrompt.Builder(RP_BuyActivity.this)
+                                    BiometricPrompt biometricPrompt = new BiometricPrompt.Builder(RP_Buy2Activity.this)
                                             .setTitle("지문 인증을 시작합니다")
                                             .setSubtitle("지문 인증 시작")
                                             .setDescription("지문")
@@ -155,12 +155,12 @@ public class RP_BuyActivity extends AppCompatActivity {
                 };
                 RP_BuyRequest buyRequest = null;
                 try {
-                    buyRequest = new RP_BuyRequest(userID, responseListener, RP_BuyActivity.this);
+                    buyRequest = new RP_BuyRequest(userID, responseListener, RP_Buy2Activity.this);
                 } catch (CertificateException | NoSuchAlgorithmException | KeyManagementException |
                          IOException | KeyStoreException e) {
                     throw new RuntimeException(e);
                 }
-                RequestQueue queue = Volley.newRequestQueue(RP_BuyActivity.this);
+                RequestQueue queue = Volley.newRequestQueue(RP_Buy2Activity.this);
                 queue.add(buyRequest);
             }
         });
@@ -194,13 +194,13 @@ public class RP_BuyActivity extends AppCompatActivity {
             }
         };
 
-        RP_VerifyRequest verifyRequest = new RP_VerifyRequest(userID, chall, Base64.encodeToString(signString, Base64.NO_WRAP), stringpublicKey, responseListener, RP_BuyActivity.this);
+        RP_VerifyRequest verifyRequest = new RP_VerifyRequest(userID, chall, Base64.encodeToString(signString, Base64.NO_WRAP), stringpublicKey, responseListener, RP_Buy2Activity.this);
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(verifyRequest);
     }
 
     private void notifyUser(String message) {
-        Toast.makeText(RP_BuyActivity.this, message, Toast.LENGTH_SHORT).show();
+        Toast.makeText(RP_Buy2Activity.this, message, Toast.LENGTH_SHORT).show();
     }
 
     private CancellationSignal getCancellationSignal() {

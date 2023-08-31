@@ -32,14 +32,12 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
 
-
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="-64dp"
             android:layout_marginRight="16dp"
-            android:layout_marginBottom="16dp"
             app:cardCornerRadius="8dp"
             app:cardElevation="4dp"
             app:cardUseCompatPadding="true"
@@ -48,103 +46,28 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="128dp"
                 android:gravity="center"
                 android:orientation="vertical">
 
                 <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="64dp"
                     android:layout_marginTop="36dp"
                     android:layout_marginBottom="24dp"
                     android:fontFamily="@font/calibri"
-                    android:text="카드정보를 입력하세요"
+                    android:text="구매가 완료되었습니다!"
                     android:textAlignment="center"
                     android:textColor="#000000"
                     android:textSize="24sp" />
 
-                <com.google.android.material.textfield.TextInputLayout
+                <ImageView
+                    android:id="@+id/BuysuccessImageView"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    android:textColorHint="#FFB3B3B3">
+                    android:layout_height="320dp"
+                    android:scaleType="centerCrop"/>
 
-                    <EditText
-                        android:id="@+id/et_card"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:fontFamily="@font/calibri"
-                        android:hint="카드번호"
-                        android:inputType="number"
-                        android:digits="0123456789"
-                        android:maxLines="1"
-                        android:textColor="@android:color/black"
-                        android:textSize="16sp" />
-                </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    android:textColorHint="#FFB3B3B3">
-
-                    <EditText
-                        android:id="@+id/et_cvc"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:fontFamily="@font/calibri"
-                        android:hint="cvc"
-                        android:inputType="number"
-                        android:digits="0123456789"
-                        android:maxLines="1"
-                        android:textColor="@android:color/black"
-                        android:textSize="16sp" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    android:textColorHint="#FFB3B3B3">
-
-                    <EditText
-                        android:id="@+id/et_date"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:fontFamily="@font/calibri"
-                        android:hint="유효기간"
-                        android:inputType="number"
-                        android:digits="0123456789"
-                        android:maxLines="1"
-                        android:textColor="@android:color/black"
-                        android:textSize="16sp" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    android:textColorHint="#FFB3B3B3"
-                    app:passwordToggleEnabled="true">
-
-                    <EditText
-                        android:id="@+id/et_pw"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:fontFamily="@font/calibri"
-                        android:hint="비밀번호"
-                        android:inputType="number"
-                        android:digits="0123456789"
-                        android:maxLines="1"
-                        android:textColor="@android:color/black"
-                        android:textSize="16sp" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <Button
-                    android:id="@+id/cardenroll"
-                    android:layout_width="131dp"
-                    android:layout_height="wrap_content"
-                    android:text="등록" />
 
             </LinearLayout>
 

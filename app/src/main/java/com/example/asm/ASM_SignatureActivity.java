@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
+import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.Signature;
@@ -56,11 +57,14 @@ public class ASM_SignatureActivity extends AppCompatActivity {
             }
             privateKey = privateKeyEntry.getPrivateKey();
 
+            MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
+            byte[] hashBytes = messageDigest.digest(challenge.getBytes());
 
             Signature signature = Signature.getInstance("SHA256withRSA");
             signature.initSign(privateKey);
-            signature.update(challenge.getBytes());
+            signature.update(hashBytes);
             byte[] encodedSignature = signature.sign();
+
             String signedChallenge = Base64.encodeToString(encodedSignature, Base64.NO_WRAP);
 
             return encodedSignature;
