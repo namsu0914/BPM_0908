@@ -20,12 +20,12 @@ import javax.net.ssl.SSLSocketFactory;
 
 public class FIDORegisterResponse extends StringRequest {
 
-    final static private String URL = "https://192.168.0.2:443/FIDORegisterResponse.php";
+    final static private String URL = "https://192.168.0.5:443/FIDORegisterResponse.php";
 
     public FIDORegisterResponse(String userID, String message, String signature,String publicKey, Response.Listener<String> listener, Context context) throws CertificateException, IOException, KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
         super(Method.POST, URL, listener, null);
 
-        SSLSocketFactory sslSocketFactory = getPinnedCertSslSocketFactory(context, R.raw.bpmserver);
+        SSLSocketFactory sslSocketFactory = getPinnedCertSslSocketFactory(context, R.raw.server);
         HttpsURLConnection.setDefaultSSLSocketFactory(sslSocketFactory);
 
         HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {

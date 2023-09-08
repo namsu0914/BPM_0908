@@ -124,8 +124,23 @@ public class BiometricActivity extends AppCompatActivity {
                 }
             }
         };
+        Intent intent = getIntent();
+        String userID = intent.getStringExtra("userID");
+        //Log.d(TAG,"유저 아이디: "+userID);
         RP_PaymentDetailRequest paymentDetailRequest = null;
-        paymentDetailRequest = new RP_PaymentDetailRequest(responseListner);
+        try {
+            paymentDetailRequest = new RP_PaymentDetailRequest(userID, responseListner, BiometricActivity.this);
+        } catch (CertificateException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (KeyStoreException e) {
+            throw new RuntimeException(e);
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        } catch (KeyManagementException e) {
+            throw new RuntimeException(e);
+        }
         RequestQueue queue = Volley.newRequestQueue(BiometricActivity.this);
         queue.add(paymentDetailRequest);
 

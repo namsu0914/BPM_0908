@@ -1,5 +1,6 @@
 package com.example.rp;
 
+
 import static com.example.rp.RP_RegisterRequest.getPinnedCertSslSocketFactory;
 
 import android.content.Context;
@@ -25,14 +26,14 @@ import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocketFactory;
 
 public class RP_BuyRequest extends StringRequest {
-    final static private String URL = "https://192.168.0.2:443/FIDOBuyRequest.php";
+    final static private String URL = "https://192.168.0.5:443/FIDOBuyRequest.php";
 
     private Map<String ,String> map;
 
-    public RP_BuyRequest(String userID ,Response.Listener<String> listener, Context context) throws CertificateException, IOException, KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
+    public RP_BuyRequest(String userID, String p_id, Response.Listener<String> listener, Context context) throws CertificateException, IOException, KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
         super(Method.POST, URL, listener, null);
 
-        SSLSocketFactory sslSocketFactory = getPinnedCertSslSocketFactory(context, R.raw.bpmserver);
+        SSLSocketFactory sslSocketFactory = getPinnedCertSslSocketFactory(context, R.raw.server);
         HttpsURLConnection.setDefaultSSLSocketFactory(sslSocketFactory);
 
         HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {
@@ -43,6 +44,7 @@ public class RP_BuyRequest extends StringRequest {
 
         map= new HashMap<>();
         map.put("userID",userID);
+        map.put("p_id", p_id);
     }
 
     @Nullable

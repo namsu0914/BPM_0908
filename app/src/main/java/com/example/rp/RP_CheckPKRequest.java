@@ -23,13 +23,13 @@ import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocketFactory;
 
 public class RP_CheckPKRequest extends StringRequest {
-    final static private String URL = "https://192.168.0.2:443/CheckPK.php";
+    final static private String URL = "https://192.168.0.5:443/CheckPK.php";
     private Map<String ,String > map;
 
     public RP_CheckPKRequest(String userID, Response.Listener<String> listener, Context context) throws CertificateException, IOException, KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
         super(Method.POST, URL, listener, null);
 
-        SSLSocketFactory sslSocketFactory = getPinnedCertSslSocketFactory(context, R.raw.bpmserver);
+        SSLSocketFactory sslSocketFactory = getPinnedCertSslSocketFactory(context, R.raw.server);
         HttpsURLConnection.setDefaultSSLSocketFactory(sslSocketFactory);
 
         HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {

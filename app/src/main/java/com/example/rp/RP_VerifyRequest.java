@@ -25,10 +25,10 @@ import javax.net.ssl.SSLSocketFactory;
 
 public class RP_VerifyRequest extends StringRequest {
     private static final String TAG = "verify";
-    final static private String URL = "https://192.168.0.2:443/Verify.php";
+    final static private String URL = "https://192.168.0.5:443/Verify.php";
     private Map<String ,String> map;
 
-    public RP_VerifyRequest(String userID, String message, String signature,String publicKey, Response.Listener<String> listener, Context context) throws CertificateException, IOException, KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
+    public RP_VerifyRequest(String userID,String p_id ,String message, String signature,String publicKey, Response.Listener<String> listener, Context context) throws CertificateException, IOException, KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
         super(Method.POST, URL, listener, null);
 
         Log.d(TAG, "아이디: " + userID);
@@ -36,7 +36,7 @@ public class RP_VerifyRequest extends StringRequest {
         Log.d(TAG, "서명  : " + signature);
         //Log.d(TAG, "공개키: " + publicKey);
 
-        SSLSocketFactory sslSocketFactory = getPinnedCertSslSocketFactory(context, R.raw.bpmserver);
+        SSLSocketFactory sslSocketFactory = getPinnedCertSslSocketFactory(context, R.raw.server);
         HttpsURLConnection.setDefaultSSLSocketFactory(sslSocketFactory);
 
         HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {
@@ -47,6 +47,7 @@ public class RP_VerifyRequest extends StringRequest {
 
         map= new HashMap<>();
         map.put("userID", userID);
+        map.put("p_id", p_id);
         map.put("message", message);
         map.put("signature", signature);
         map.put("publicKey", publicKey);

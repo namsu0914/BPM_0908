@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
+import com.example.duduhgee.R;
 
 import java.io.IOException;
 import java.security.KeyManagementException;
@@ -24,14 +25,14 @@ import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocketFactory;
 
 public class FIDORegisterRequest extends StringRequest {
-    final static private String URL = "https://192.168.0.2:443/FIDORegisterRequest.php";
+    final static private String URL = "https://192.168.0.5:443/FIDORegisterRequest.php";
 
     private Map<String ,String > map;
 
     public FIDORegisterRequest(String userID, Response.Listener<String> listener, Context context) throws CertificateException, IOException, KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
         super(Method.POST, URL, listener, null);
 
-        SSLSocketFactory sslSocketFactory = getPinnedCertSslSocketFactory(context, R.raw.bpmserver);
+        SSLSocketFactory sslSocketFactory = getPinnedCertSslSocketFactory(context, R.raw.server);
         HttpsURLConnection.setDefaultSSLSocketFactory(sslSocketFactory);
 
         HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {

@@ -30,13 +30,13 @@ import javax.net.ssl.TrustManagerFactory;
 
 public class RP_RegisterRequest extends StringRequest {
     //서버 URL 설정(php파일 연동)
-    final static private String URL = "https://192.168.0.2:443/RP_Register.php";
+    final static private String URL = "https://192.168.0.5:443/RP_Register.php";
     private Map<String ,String > map;
 
     public RP_RegisterRequest(String userID, String userPassword, String userName, String userAge, Response.Listener<String> listener, Context context) throws CertificateException, IOException, KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
         super(Method.POST, URL, listener, null);
 
-        SSLSocketFactory sslSocketFactory = getPinnedCertSslSocketFactory(context, R.raw.bpmserver);
+        SSLSocketFactory sslSocketFactory = getPinnedCertSslSocketFactory(context, R.raw.server);
         HttpsURLConnection.setDefaultSSLSocketFactory(sslSocketFactory);
 
         HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {
