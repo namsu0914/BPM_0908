@@ -72,7 +72,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Start the new activity when the ImageView is clicked
-                Intent intent = new Intent(MainActivity.this, RP_Buy2Activity.class);
+                Intent intent = getIntent();
+                String userID = intent.getStringExtra("userID");
+
+                intent = new Intent(MainActivity.this, RP_Buy2Activity.class);
                 intent.putExtra("userID", userID);
                 startActivity(intent);
             }
@@ -95,8 +98,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // 메인 액티비티로 이동하는 인텐트 생성
-                Intent mainIntent = new Intent(MainActivity.this, MainActivity.class);
-                startActivity(mainIntent);
+                Intent intent = getIntent();
+                String userID = intent.getStringExtra("userID");
+                // 메인 액티비티로 이동하는 인텐트 생성
+                intent = new Intent(MainActivity.this, MainActivity.class);
+                startActivity(intent);
                 finish(); // 현재 액티비티를 종료하여 이전 액티비티로 돌아갈 수 있도록 함
             }
         });
@@ -104,11 +110,6 @@ public class MainActivity extends AppCompatActivity {
         tv_id.setText(userID);
     }
 
-    private void startBuyActivity(Class<?> activityClass, String userID) {
-        Intent intent = new Intent(MainActivity.this, activityClass);
-        intent.putExtra("userID", userID);
-        startActivity(intent);
-    }
 
 
     private void notifyUser(String message) {
@@ -121,18 +122,6 @@ public class MainActivity extends AppCompatActivity {
         return cancellationSignal;
     }
 
-    private boolean checkPrivateKeyAccess(String keyAlias) {
-        try {
-            KeyStore keyStore = KeyStore.getInstance("AndroidKeyStore");
-            keyStore.load(null);
-
-            return keyStore.entryInstanceOf(keyAlias, KeyStore.PrivateKeyEntry.class);
-        } catch (KeyStoreException | CertificateException | NoSuchAlgorithmException |
-                 IOException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
 
     @TargetApi(Build.VERSION_CODES.P)
     public Boolean checkBiometricSupport() {

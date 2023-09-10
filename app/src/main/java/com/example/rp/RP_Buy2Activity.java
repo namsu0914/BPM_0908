@@ -51,7 +51,7 @@ public class RP_Buy2Activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_buy);
+        setContentView(R.layout.activity_buy2);
 
         btn_buy = findViewById(R.id.btn_buy);
 
